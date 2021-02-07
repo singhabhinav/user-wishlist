@@ -1,0 +1,44 @@
+<h1>Flask + Redis</h1>
+
+<div>
+<a href="/">home</a> <a href="/keys">keys</a>
+</div>
+<center>
+	<form action="/save" method="POST">
+		<label for="username">User Name</label><br>
+		<input name="username" id="username" required><br><br>
+
+		<label for="place">Favorite Place</label><br>
+		<input name="place" id="place" required><br><br>
+		
+		<label for="food">Favorite Food</label><br>
+		<input name="food" id="food" required><br><br>
+		
+		<input type="submit" value="Save">
+	</form>
+	<br>
+
+	Type in a username and fetch the places to visit.
+	<form action="/get" method="POST">
+	<input name="username">
+	<input type="submit" value="Get">
+	</form>
+</center>
+{% if saved %}
+<b>Saved: </b>
+{{ username }} - Place: {{ place }}, Food: {{ food }}
+{% endif %}
+
+{% if username %}
+  The WishList of <b>{{ username }}</b> is <b>{{ place }} and {{ food }}</b>
+{% endif %}
+
+
+{% if usernames %}
+  <h2>Keys</h2>
+  <ul>
+  {% for username in usernames %}
+     <li>{{ username.decode('utf8') }}</li>
+  {% endfor %}
+  </ul>
+{% endif %}

@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  web:
+    environment:
+        # Prevents Python from buffering stdout and stderr
+        - PYTHONUNBUFFERED=1
+        # With the $PYTHONDONTWRITEBYTECODE environment variable set, Python will no longer write these files to disk, and your development environment will remain nice and clean.
+        - PYTHONDONTWRITEBYTECODE=1
+        # Prevents Python from writing pyc files to disc
+    build: .
+    ports:
+    - "5001:5000"
+    volumes:
+    - .:/opt
+    links:
+    - redis
+    - db
+  redis:
+    image: redis:6.0.8
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=hello_flask
+      - POSTGRES_PASSWORD=hello_flask
+      - POSTGRES_DB=hello_flask_dev
+volumes:
+  postgres_data:
