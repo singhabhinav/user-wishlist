@@ -1,17 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
 import datetime
-# from app import app
-# db = SQLAlchemy(app)
-db = SQLAlchemy()
 
-# db.create_all()
-# db.session.commit()
+db = SQLAlchemy()
 
 class UserFavs(db.Model):
     """Model for the stations table"""
-    # __tablename__ = 'userplaces'
-
-    # id = db.Column(db.Integer)
     username = db.Column(db.String, primary_key = True)
     place = db.Column(db.String)
     food = db.Column(db.String)

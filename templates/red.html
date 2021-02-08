@@ -7,6 +7,7 @@
 
 {% if user_exists %}
 <font color="red">User <b>{{username}}</b> already exists with the wishlist <b>{{place}}</b> and <b>{{food}}</b>! </font>
+<small>{{msg}}</small>
 {% endif %}
 {% if saved %}
 <font color="green"><b>Saved! </b>The WishList of <b>{{ username }}</b> is <b>{{ place }} and {{ food }}</b></font>
@@ -38,6 +39,7 @@
 
 {% if get %}
 <font color="blue">The wishList of <b>{{ username }}</b> is <b>{{ place }}</b> and <b>{{ food }}</b></font>
+<small>{{msg}}</small>
 {% endif %}
 {% if no_record %}
 <font color="red">{{ response }}</font>
@@ -46,6 +48,7 @@
 </center>
 {% if usernames %}
   <h2>Keys</h2>
+  <small>(From Redis)</small>
   <ul>
   {% for username in usernames %}
      <li>{{ username.decode('utf8') }}</li>

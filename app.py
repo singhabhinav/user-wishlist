@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 import redis
-from flask_script import Manager
+# from flask_script import Manager
 from flask_migrate import Migrate
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://hello_flask:hello_flask@db
 from models import db
 from models import UserFavs
 
-manager = Manager(app)
+# manager = Manager(app)
 migrate = Migrate(app, db)
 
 # ...app config...
@@ -33,7 +33,7 @@ def save():
 
     if red.hgetall(username).keys():
         print("hget username:", red.hgetall(username))
-        return render_template('red.html', user_exists=1, username=username, place=red.hget(username,"place").decode('utf-8'), food=red.hget(username,"food").decode('utf-8'))
+        return render_template('red.html', user_exists=1, msg='(From Redis)', username=username, place=red.hget(username,"place").decode('utf-8'), food=red.hget(username,"food").decode('utf-8'))
 
     elif len(list(red.hgetall(username)))==0:
         record =  UserFavs.query.filter_by(username=username).first()
@@ -41,7 +41,7 @@ def save():
         if record:
             red.hset(username, "place", place)
             red.hset(username, "food", food)
-            return render_template('red.html', user_exists=1, username=username, place=record.place, food=record.food)
+            return render_template('red.html', user_exists=1, msg='(From DataBase)', username=username, place=record.place, food=record.food)
 
     new_record = UserFavs(username=username, place=place, food=food)
     db.session.add(new_record)
@@ -62,10 +62,6 @@ def save():
 
     return render_template('red.html', saved=1, username=username, place=red.hget(username, "place").decode('utf-8'), food=red.hget(username, "food").decode('utf-8'))
 
-    # except:
-    #     return render_template('red.html', user_exists=1, username=username, place=record.place, food=record.food)
-
-
 @app.route("/get", methods=['POST'])
 def get():
     username = request.form['username']
@@ -82,9 +78,9 @@ def get():
         red.hset(username, "food", record.food)
         print(red.hget(username, "place"), red.hget(username, "food"))
         print(record.place, record.food)
-        return render_template('red.html', get=1, username=record.username, place=record.place, food=record.food)
+        return render_template('red.html', get=1, msg='(From DataBase)', username=record.username, place=record.place, food=record.food)
 
-    return render_template('red.html', get=1, username=username, place=favs[b'place'].decode('utf-8'), food=favs[b'food'].decode('utf-8'))
+    return render_template('red.html', get=1, msg='(From Redis)', username=username, place=favs[b'place'].decode('utf-8'), food=favs[b'food'].decode('utf-8'))
 
 @app.route("/keys", methods=['GET'])
 def keys():
