@@ -31,23 +31,28 @@ def save():
     place = str(request.form['place']).lower()
     food = str(request.form['food']).lower()
 
-    if len(list(red.hgetall(username)))==0:
-        records =  UserFavs.query.filter_by(username=username).all()
-        print("Records fecthed from db:", records)
+    if red.hgetall(username).keys():
+        print("hget username:", red.hgetall(username))
+        return render_template('red.html', user_exists=1, username=username, place=red.hget(username,"place").decode('utf-8'), food=red.hget(username,"food").decode('utf-8'))
+
+    elif len(list(red.hgetall(username)))==0:
+        record =  UserFavs.query.filter_by(username=username).first()
+        print("Records fecthed from db:", record)
+        if record:
+            red.hset(username, "place", place)
+            red.hset(username, "food", food)
+            return render_template('red.html', user_exists=1, username=username, place=record.place, food=record.food)
+
+    new_record = UserFavs(username=username, place=place, food=food)
+    db.session.add(new_record)
+    db.session.commit()
 
     red.hset(username, "place", place)
     red.hset(username, "food", food)
 
-    new_record = UserFavs(username=username, place=place, food=food)
-    # new_record = UserFavs(username=username, place=place)
-    db.session.add(new_record)
-    db.session.commit()
-
-    record =  UserFavs.query.filter_by(username=username).all()
+    record =  UserFavs.query.filter_by(username=username).first()
     print("Again from db:", record)
-
-    # red.hset(username, "place", place)
-    # red.hset(username, "food", food)
+    print("Again from db: place", type(record.place), record.place)
 
     print("key-values:", red.hgetall(username))
     print("keys:", red.hkeys(username))
@@ -55,49 +60,31 @@ def save():
     print("Value for place:", red.hget(username, "place"))
     print("Value for food:", red.hget(username, "food"))
 
-
-    # working -----
-    # ret_set = red.set(username,place) 
-    # ret_set_place = red.get(username).decode('utf-8') 
-    # working -----
-
-    # working -----
-    # ret_set = red.sadd("vag","asw") 
-    # ret_set_place = red.smembers("vag")
-    # working -----
-
-    # ret_set_place_old = red.smembers(username)
-    # print("Previous places of user:", ret_set_place_old)
-
-    # if place.encode() not in ret_set_place_old:
-    #     print("Place not exists till now!")
-
-    # ret_set = red.sadd(username,place,food) 
-    # ret_set_place = red.smembers(username)
-
-    print("----------------")
-    # print(type(ret_set_place))
-    print("----------------")
-
     return render_template('red.html', saved=1, username=username, place=red.hget(username, "place").decode('utf-8'), food=red.hget(username, "food").decode('utf-8'))
-    # return render_template('red.html', saved=1, place=red.hget(username, "place").decode('utf-8'))
+
+    # except:
+    #     return render_template('red.html', user_exists=1, username=username, place=record.place, food=record.food)
+
 
 @app.route("/get", methods=['POST'])
 def get():
     username = request.form['username']
     favs = red.hgetall(username)
+    print("username", username)
     print("favs type", type(favs), favs)
-    # if len(list(red.hgetall(username))):
     print("*******",len(list(favs)))
-    if len(list(favs))==0:
-        record =  UserFavs.query.filter_by(username=username).all()
-        print("Records fecthed from db:", records)
-        if len(records)==0:
-            return render_template('red.html', username=username, place="Not defined yet")
-        return render_template('red.html', username=record.username, place=record.place)
-    # str_place = place.decode('utf-8')
-    # return render_template('red.html', username=username)
-    return render_template('red.html', username=username, place=favs[b'place'].decode('utf-8'), food=favs[b'food'].decode('utf-8'))
+    if not favs:
+        record =  UserFavs.query.filter_by(username=username).first()
+        print("Records fecthed from db:", record)
+        if not record:
+            return render_template('red.html', no_record=1, response=f"Record for '{username}'  not yet defined !")
+        red.hset(username, "place", record.place)
+        red.hset(username, "food", record.food)
+        print(red.hget(username, "place"), red.hget(username, "food"))
+        print(record.place, record.food)
+        return render_template('red.html', get=1, username=record.username, place=record.place, food=record.food)
+
+    return render_template('red.html', get=1, username=username, place=favs[b'place'].decode('utf-8'), food=favs[b'food'].decode('utf-8'))
 
 @app.route("/keys", methods=['GET'])
 def keys():

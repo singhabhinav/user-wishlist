@@ -1,9 +1,18 @@
-<h1>Flask + Redis</h1>
+<h1>Flask + Redis + Postgres</h1>
 
 <div>
 <a href="/">home</a> <a href="/keys">keys</a>
 </div>
 <center>
+
+{% if user_exists %}
+<font color="red">User <b>{{username}}</b> already exists with the wishlist <b>{{place}}</b> and <b>{{food}}</b>! </font>
+{% endif %}
+{% if saved %}
+<font color="green"><b>Saved! </b>The WishList of <b>{{ username }}</b> is <b>{{ place }} and {{ food }}</b></font>
+{% endif %}
+<br><br>
+	<b>Create your wishlist record here!</b>
 	<form action="/save" method="POST">
 		<label for="username">User Name</label><br>
 		<input name="username" id="username" required><br><br>
@@ -18,22 +27,23 @@
 	</form>
 	<br>
 
-	Type in a username and fetch the places to visit.
+	<b>Type in a username and fetch the wishlist</b>
 	<form action="/get" method="POST">
 	<input name="username">
 	<input type="submit" value="Get">
 	</form>
+
+
+
+
+{% if get %}
+<font color="blue">The wishList of <b>{{ username }}</b> is <b>{{ place }}</b> and <b>{{ food }}</b></font>
+{% endif %}
+{% if no_record %}
+<font color="red">{{ response }}</font>
+{% endif %}
+
 </center>
-{% if saved %}
-<b>Saved: </b>
-{{ username }} - Place: {{ place }}, Food: {{ food }}
-{% endif %}
-
-{% if username %}
-  The WishList of <b>{{ username }}</b> is <b>{{ place }} and {{ food }}</b>
-{% endif %}
-
-
 {% if usernames %}
   <h2>Keys</h2>
   <ul>
