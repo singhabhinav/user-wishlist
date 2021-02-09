@@ -16,17 +16,17 @@
             "memory": 100
         },
         {
-            "name": "nginx-flask",
+            "name": "flask-app",
             "image": "singhabhinav/user-wishlist",
-            "hostname": "nginx",
+            "hostname": "flask-app",
             "essential": true,
             "portMappings": [
                 {
                     "hostPort": 80,
-                    "containerPort": 80
+                    "containerPort": 5000
                 }
              ],
-             "links": ["redis", "postgres"],
+            "links": ["redis", "postgres"],
             "memory": 100
         }
     ]
