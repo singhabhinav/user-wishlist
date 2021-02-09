@@ -1,5 +1,7 @@
 sudo: required
 
+language: generic
+
 # Tell Travis we need docker
 services:
     - docker
