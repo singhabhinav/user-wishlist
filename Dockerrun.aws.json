@@ -17,7 +17,7 @@
         },
         {
             "name": "nginx-flask",
-            "image": "vagdevik/user-wishlist",
+            "image": "singhabhinav/user-wishlist",
             "hostname": "nginx",
             "essential": true,
             "portMappings": [

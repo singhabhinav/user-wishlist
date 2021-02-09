@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: vagdevik/my-wishlist-flask:latest
+    image: singhabhinav/my-wishlist-flask:latest
     environment:
         # Prevents Python from buffering stdout and stderr
         - PYTHONUNBUFFERED=1
