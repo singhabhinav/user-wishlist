@@ -1,0 +1,33 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "redis",
+            "image": "redis:6.0.8",
+            "hostname": "redis",
+            "essential": false,
+            "memory": 100
+        },
+        {
+            "name": "postgres",
+            "image": "postgres:12-alpine",
+            "hostname": "postgres",
+            "essential": false,
+            "memory": 100
+        },
+        {
+            "name": "nginx-flask",
+            "image": "vagdevik/user-wishlist",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+             ],
+             "links": ["redis", "postgres"],
+            "memory": 100
+        }
+    ]
+}
