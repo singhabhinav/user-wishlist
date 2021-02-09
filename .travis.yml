@@ -1,5 +1,6 @@
 sudo: required
 
+# Tell travis that language is generic
 language: generic
 
 # Tell Travis we need docker
