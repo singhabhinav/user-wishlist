@@ -1,7 +1,6 @@
 {
     "AWSEBDockerrunVersion": 2,
-    "containerDefinitions": [
-        {
+    "containerDefinitions": [{
             "name": "redis",
             "image": "redis:6.0.8",
             "hostname": "redis",
@@ -14,33 +13,26 @@
             "hostname": "db",
             "essential": false,
             "memory": 100,
-            "environment": [
-                {
-                    "POSTGRES_USER": "hello_flask",
-                    "POSTGRES_PASSWORD":"hello_flask",
-                    "POSTGRES_DB":"hello_flask_dev"
-                }
-            ],
-            "mountPoints": [
-                {
-                    "sourceVolume": "postgres_data",
-                    "containerPath": "/var/lib/postgresql/data/",
-                    // "readOnly": true
-                }
-            ],
+            "environment": [{
+                "POSTGRES_USER": "hello_flask",
+                "POSTGRES_PASSWORD": "hello_flask",
+                "POSTGRES_DB": "hello_flask_dev"
+            }],
+            "mountPoints": [{
+                "sourceVolume": "postgres_data",
+                "containerPath": "/var/lib/postgresql/data/"
+            }]
         },
         {
             "name": "nginx-flask",
             "image": "vagdevik/user-wishlist",
             "hostname": "web",
             "essential": true,
-            "portMappings": [
-                {
-                    "hostPort": 80,
-                    "containerPort": 80
-                }
-             ],
-             "links": ["redis", "db"],
+            "portMappings": [{
+                "hostPort": 80,
+                "containerPort": 80
+            }],
+            "links": ["redis", "db"],
             "memory": 100
         }
     ]
