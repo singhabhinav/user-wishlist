@@ -60,7 +60,7 @@
 	"family": "",
 	"volumes": [{
 			"host": {
-				"sourcePath": "./app"
+				"sourcePath": "/app"
 			},
 			"name": "_App"
 		},
