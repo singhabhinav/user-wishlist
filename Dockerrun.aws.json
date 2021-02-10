@@ -1,43 +1,73 @@
 {
-    "AWSEBDockerrunVersion": 2,
-    "containerDefinitions": [{
-            "name": "redis",
-            "image": "redis:6.0.8",
-            "hostname": "redis",
-            "essential": false,
-            "memory": 100
-        },
-        {
-            "name": "db",
-            "image": "postgres:12-alpine",
-            "hostname": "db",
-            "essential": false,
-            "memory": 100,
-            "environment": [{
-                "POSTGRES_USER": "hello_flask",
-                "POSTGRES_PASSWORD": "hello_flask",
-                "POSTGRES_DB": "hello_flask_dev"
-            }],
-            "mountPoints": [{
-                "sourceVolume": "postgres_data",
-                "containerPath": "/var/lib/postgresql/data/"
-            }]
-        },
-        {
-            "name": "web",
-            "image": "vagdevik/user-wishlist",
-            "hostname": "web",
-            "essential": true,
-            "portMappings": [{
-                "hostPort": 80,
-                "containerPort": 80
-            }],
-            "links": ["redis", "db"],
-            "memory": 100,
-            "environment": [{
-                "PYTHONUNBUFFERED": 1,
-                "PYTHONDONTWRITEBYTECODE": 1
-            }]
-        }
-    ]
+	"containerDefinitions": [{
+			"environment": [{
+					"name": "POSTGRES_USER",
+					"value": "hello_flask"
+				},
+				{
+					"name": "POSTGRES_PASSWORD",
+					"value": "hello_flask"
+				},
+				{
+					"name": "POSTGRES_DB",
+					"value": "hello_flask_dev"
+				}
+			],
+			"essential": true,
+			"image": "postgres:12-alpine",
+			"memory": 100,
+			"mountPoints": [{
+				"containerPath": "/var/lib/postgresql/data/",
+				"sourceVolume": "Postgres_Data"
+			}],
+			"name": "db"
+		},
+		{
+			"essential": true,
+			"image": "redis:6.0.8",
+			"memory": 100,
+			"name": "redis"
+		},
+		{
+			"environment": [{
+					"name": "PYTHONUNBUFFERED",
+					"value": "1"
+				},
+				{
+					"name": "PYTHONDONTWRITEBYTECODE",
+					"value": "1"
+				}
+			],
+			"essential": true,
+			"links": [
+				"redis",
+				"db"
+			],
+			"mountPoints": [{
+				"containerPath": "/app",
+				"sourceVolume": "_App"
+			}],
+			"name": "web",
+			"image": "vagdevik/user-wishlist",
+			"memory": 100,
+			"portMappings": [{
+				"containerPort": 80,
+				"hostPort": 80
+			}]
+		}
+	],
+	"family": "",
+	"volumes": [{
+			"host": {
+				"sourcePath": "./app"
+			},
+			"name": "_App"
+		},
+		{
+			"host": {
+				"sourcePath": "postgres_data"
+			},
+			"name": "Postgres_Data"
+		}
+	]
 }
