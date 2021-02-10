@@ -65,7 +65,6 @@
 			}]
 		}
 	],
-	"family": "",
 	"volumes": [{
 			"host": {
 				"sourcePath": "/app"
