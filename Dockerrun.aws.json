@@ -21,13 +21,21 @@
 				"containerPath": "/var/lib/postgresql/data/",
 				"sourceVolume": "Postgres_Data"
 			}],
-			"name": "db"
+			"name": "db",
+			"portMappings": [{
+				"containerPort": 5432,
+				"hostPort": 5432
+			}]
 		},
 		{
 			"essential": true,
 			"image": "redis:6.0.8",
 			"memory": 100,
-			"name": "redis"
+			"name": "redis",
+			"portMappings": [{
+				"containerPort": 6379,
+				"hostPort": 6379
+			}]
 		},
 		{
 			"environment": [{
