@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web:
+    volumes:
+      - ./app:/app
+    ports:
+      - "80:80"
+    environment:
+      # Prevents Python from buffering stdout and stderr
+      - PYTHONUNBUFFERED=1
+      # With the $PYTHONDONTWRITEBYTECODE environment variable set, Python will no longer write these files to disk, and your development environment will remain nice and clean.
+      - PYTHONDONTWRITEBYTECODE=1
+      # Prevents Python from writing pyc files to disc
+      
+      # - FLASK_APP=main.py
+      # - FLASK_DEBUG=1
+      # - 'RUN=flask run --host=0.0.0.0 --port=80'
+    # command: flask run --host=0.0.0.0 --port=80
+    # Infinite loop, to keep it alive, for debugging
+    # command: bash -c "while true; do echo 'sleeping...' && sleep 10; done"

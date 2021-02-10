@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web:
+    build: ./
+    links:
+      - redis
+      - db
+  redis:
+    image: redis:6.0.8
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=hello_flask
+      - POSTGRES_PASSWORD=hello_flask
+      - POSTGRES_DB=hello_flask_dev
+volumes:
+  postgres_data:
+

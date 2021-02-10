@@ -1,0 +1,57 @@
+<h1>Flask + Redis + Postgres</h1>
+
+<div>
+<a href="/">home</a> <a href="/keys">keys</a>
+</div>
+<center>
+
+{% if user_exists %}
+<font color="red">User <b>{{username}}</b> already exists with the wishlist <b>{{place}}</b> and <b>{{food}}</b>! </font>
+<small>{{msg}}</small>
+{% endif %}
+{% if saved %}
+<font color="green"><b>Saved! </b>The WishList of <b>{{ username }}</b> is <b>{{ place }} and {{ food }}</b></font>
+{% endif %}
+<br><br>
+	<b>Create your wishlist record here!</b>
+	<form action="/save" method="POST">
+		<label for="username">User Name</label><br>
+		<input name="username" id="username" required><br><br>
+
+		<label for="place">Favorite Place</label><br>
+		<input name="place" id="place" required><br><br>
+		
+		<label for="food">Favorite Food</label><br>
+		<input name="food" id="food" required><br><br>
+		
+		<input type="submit" value="Save">
+	</form>
+	<br>
+
+	<b>Type in a username and fetch the wishlist</b>
+	<form action="/get" method="POST">
+	<input name="username">
+	<input type="submit" value="Get">
+	</form>
+
+
+
+
+{% if get %}
+<font color="blue">The wishList of <b>{{ username }}</b> is <b>{{ place }}</b> and <b>{{ food }}</b></font>
+<small>{{msg}}</small>
+{% endif %}
+{% if no_record %}
+<font color="red">{{ response }}</font>
+{% endif %}
+
+</center>
+{% if usernames %}
+  <h2>Keys</h2>
+  <small>(From Redis)</small>
+  <ul>
+  {% for username in usernames %}
+     <li>{{ username.decode('utf8') }}</li>
+  {% endfor %}
+  </ul>
+{% endif %}
