@@ -1,0 +1,31 @@
+sudo: required
+
+# Tell travis that language is generic
+language: generic
+
+# Tell Travis we need docker
+services:
+    - docker
+
+# Tell Travis to build production images
+after_success:
+    - docker build -t vagdevik/user-wishlist .
+
+    # Login to docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # Push images to docker hub
+    - docker push vagdevik/user-wishlist
+
+# Tell Travis how to deploy code to AWS
+deploy:
+    provider: elasticbeanstalk # We will deploy code to Elastic Beanstalk
+    region: ap-south-1 # Specify your region
+    app: "wishlist-project-docker-multi-container" # Copy it from Elastic Beanstalk dashboard
+    env: "Wishlistprojectdockermulticontainer-env" # Copy it from Elastic Beanstalk dashboard
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket_name: "elasticbeanstalk-ap-south-1-134650223060" # Elastic Beanstalk will take code from S3 bucket and deploy it in container. Take it from AWS S3
+    bucket_path: "docker" # Folder where Travis CI will upload the code in zip file in this folder. Take it from AWS S3
+    on: 
+        branch: my-wishlist # Deploy only when there are changes on master branch
