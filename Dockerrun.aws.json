@@ -24,7 +24,7 @@
             }]
         },
         {
-            "name": "nginx-flask",
+            "name": "web",
             "image": "vagdevik/user-wishlist",
             "hostname": "web",
             "essential": true,
@@ -33,7 +33,11 @@
                 "containerPort": 80
             }],
             "links": ["redis", "db"],
-            "memory": 100
+            "memory": 100,
+            "environment": [{
+                "PYTHONUNBUFFERED": 1,
+                "PYTHONDONTWRITEBYTECODE": 1
+            }],
         }
     ]
 }
