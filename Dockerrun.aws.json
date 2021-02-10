@@ -37,7 +37,7 @@
             "environment": [{
                 "PYTHONUNBUFFERED": 1,
                 "PYTHONDONTWRITEBYTECODE": 1
-            }],
+            }]
         }
     ]
 }
