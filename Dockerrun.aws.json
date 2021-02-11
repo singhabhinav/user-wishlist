@@ -52,10 +52,6 @@
 				"redis",
 				"db"
 			],
-			"mountPoints": [{
-				"containerPath": "/app",
-				"sourceVolume": "app"
-			}],
 			"name": "web",
 			"image": "singhabhinav/user-wishlist",
 			"memory": 100,
