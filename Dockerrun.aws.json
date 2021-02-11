@@ -19,7 +19,7 @@
 			"memory": 100,
 			"mountPoints": [{
 				"containerPath": "/var/lib/postgresql/data/",
-				"sourceVolume": "Postgres_Data"
+				"sourceVolume": "postgres_data"
 			}],
 			"name": "db",
 			"portMappings": [{
@@ -54,7 +54,7 @@
 			],
 			"mountPoints": [{
 				"containerPath": "/app",
-				"sourceVolume": "_App"
+				"sourceVolume": "app"
 			}],
 			"name": "web",
 			"image": "vagdevik/user-wishlist",
@@ -69,13 +69,13 @@
 			"host": {
 				"sourcePath": "/app"
 			},
-			"name": "_App"
+			"name": "app"
 		},
 		{
 			"host": {
 				"sourcePath": "postgres_data"
 			},
-			"name": "Postgres_Data"
+			"name": "postgres_data"
 		}
 	]
 }

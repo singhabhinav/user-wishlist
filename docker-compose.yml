@@ -1,22 +1,35 @@
 version: '3'
 services:
   web:
-    build: ./
+    image: vagdevik/user-wishlist
+    volumes:
+      - ./app:/app
+    ports:
+      - "80:80"
+    environment:
+      # Prevents Python from buffering stdout and stderr
+      - PYTHONUNBUFFERED=1
+      # With the $PYTHONDONTWRITEBYTECODE environment variable set, Python will no longer write these files to disk, and your development environment will remain nice and clean.
+      - PYTHONDONTWRITEBYTECODE=1
+      # Prevents Python from writing pyc files to disc
     links:
       - redis
       - db
   redis:
     image: redis:6.0.8
+    ports: 
+      - "6379:6379"
   db:
     image: postgres:12-alpine
-    volumes:
+    volumes:  
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=hello_flask
       - POSTGRES_PASSWORD=hello_flask
       - POSTGRES_DB=hello_flask_dev
-      
-# content about volumes here: https://docs.docker.com/storage/volumes/#populate-a-volume-using-a-container
+    ports:
+      - "5432:5432"
+
 volumes:
   postgres_data:
 
