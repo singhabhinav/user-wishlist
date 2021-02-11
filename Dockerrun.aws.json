@@ -57,7 +57,7 @@
 				"sourceVolume": "app"
 			}],
 			"name": "web",
-			"image": "vagdevik/user-wishlist",
+			"image": "singhabhinav/user-wishlist",
 			"memory": 100,
 			"portMappings": [{
 				"containerPort": 80,
