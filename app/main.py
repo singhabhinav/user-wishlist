@@ -24,7 +24,7 @@ with app.app_context():
 red = redis.Redis(host='redis', port=6379, db=0)
 
 @app.route("/")
-def hello():
+def home():
     return render_template('red.html')
 
 @app.route("/save", methods=['POST'])
